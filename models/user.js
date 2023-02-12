@@ -1,32 +1,35 @@
 const { Schema, model } = require('mongoose');
 const { count } = require('./course');
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  cart: {
-    items: [
-      {
-        count: {
-          type: Number,
-          required: true,
-          default: 1,
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    cart: {
+      items: [
+        {
+          count: {
+            type: Number,
+            required: true,
+            default: 1,
+          },
+          courseId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Course',
+            required: true,
+          },
         },
-        courseId: {
-          type: Schema.Types.ObjectId,
-          ref: 'Course',
-          required: true,
-        },
-      },
-    ],
+      ],
+    },
   },
-});
+  { timestamps: true, toJSON: { virtuals: true } }
+);
 
 userSchema.methods.addToCart = function (course) {
   const items = [...this.cart.items];
