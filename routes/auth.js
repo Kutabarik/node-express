@@ -19,8 +19,8 @@ router.get('/logout', (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const candidate = await User.findOne({ email });
+
     if (candidate) {
       const areSame = await bcrypt.compare(password, candidate.password);
 
@@ -48,7 +48,6 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, repeat } = req.body;
-
     const candidate = await User.findOne({ email });
 
     if (candidate) {
